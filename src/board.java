@@ -68,4 +68,20 @@ public class board {
             }            
         }
     }
+
+    public boolean isFull()
+    // Apakah papan telah terisi penuh
+    {
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                if (grid[i][j] == ' ') // terdapat space kosong
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }
