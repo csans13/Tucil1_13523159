@@ -1,0 +1,41 @@
+public class board {
+    private int rows, cols;
+    private char[][] grid;
+
+    public board(int rows, int cols)
+    {
+        this.rows = rows;
+        this.cols = cols;
+        this.grid = new char[rows][cols];
+
+        // Papan mula-mula kosong
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                grid[i][j] = ' '; // Menandakan space kosong
+            }
+        }
+    }
+
+    public boolean isPlaceable(piece piece, int row, int col)
+    // Apakah suatu blok dapat ditempatkan pada posisi tertentu
+    {
+        for (int i = 0; i < piece.getHeight(); i++)
+        {
+            for (int j = 0; j < piece.getWidth(); j++)
+            {
+                if (piece.getShape()[i][j] != ' ') // Jika blok mengisi suatu space pada papan
+                {
+                    int boardRow = row + i;
+                    int boardCol = col + j;
+                    if (boardRow >= rows || boardCol >= cols || grid[boardRow][boardCol] != ' ')
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+}
