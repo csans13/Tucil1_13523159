@@ -18,6 +18,16 @@ public class board {
         }
     }
 
+    public int getRows()
+    {
+        return rows;
+    }
+
+    public int getCols()
+    {
+        return cols;
+    }
+
     public boolean isPlaceable(piece piece, int row, int col)
     // Apakah suatu blok dapat ditempatkan pada posisi tertentu
     {
