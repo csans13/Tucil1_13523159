@@ -23,4 +23,32 @@ public class piece {
     {
         return width;
     }
+
+    public piece rotate()
+    // Blok dirotasikan searah jarum jam
+    {
+        char[][] newShape = new char[width][height];
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                newShape[j][height - 1 - i] = shape[i][j];
+            }
+        }
+        return new piece(newShape);
+    }
+
+    public piece flip()
+    // Blok dicerminkan
+    {
+        char[][] newShape = new char[height][width];
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                newShape[i][width - i - j] = shape[i][j];
+            }   
+        }
+        return new piece(newShape);
+    }
 }
