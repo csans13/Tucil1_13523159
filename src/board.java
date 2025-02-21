@@ -38,4 +38,34 @@ public class board {
         }
         return true;
     }
+
+    public void placePiece(piece piece, int row, int col, char symbol)
+    // Menempatkan blok pada papan
+    {
+        for (int i = 0; i < piece.getHeight(); i++)
+        {
+            for (int j = 0; j < piece.getWidth(); j++)
+            {
+                if (piece.getShape()[i][j] != ' ')
+                {
+                    grid[row + i][col + j] = symbol;
+                }
+            }
+        }
+    }
+
+    public void removePiece(piece piece, int row, int col)
+    // Menghapus blok dari papan (backtracking)
+    {
+        for (int i = 0; i < piece.getHeight(); i++)
+        {
+            for (int j = 0; j < piece.getWidth(); j++)
+            {
+                if (piece.getShape()[i][j] != ' ')
+                {
+                    grid[row + i][col + j] = ' ';   
+                }   
+            }            
+        }
+    }
 }
