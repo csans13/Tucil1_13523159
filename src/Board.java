@@ -1,8 +1,8 @@
-public class board {
+public class Board {
     private int rows, cols;
     private char[][] grid;
 
-    public board(int rows, int cols)
+    public Board(int rows, int cols)
     {
         this.rows = rows;
         this.cols = cols;
@@ -28,7 +28,7 @@ public class board {
         return cols;
     }
 
-    public boolean isPlaceable(piece piece, int row, int col)
+    public boolean isPlaceable(Piece piece, int row, int col)
     // Apakah suatu blok dapat ditempatkan pada posisi tertentu
     {
         for (int i = 0; i < piece.getHeight(); i++)
@@ -49,7 +49,7 @@ public class board {
         return true;
     }
 
-    public void placePiece(piece piece, int row, int col, char symbol)
+    public void placePiece(Piece piece, int row, int col, char symbol)
     // Menempatkan blok pada papan
     {
         for (int i = 0; i < piece.getHeight(); i++)
@@ -64,7 +64,7 @@ public class board {
         }
     }
 
-    public void removePiece(piece piece, int row, int col)
+    public void removePiece(Piece piece, int row, int col)
     // Menghapus blok dari papan (backtracking)
     {
         for (int i = 0; i < piece.getHeight(); i++)
