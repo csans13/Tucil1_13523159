@@ -1,8 +1,8 @@
-public class piece {
+public class Piece {
     private char[][] shape;
     private int height, width;
 
-    public piece(char[][] shape)
+    public Piece(char[][] shape)
     {
         this.shape = shape;
         this.height = shape.length;
@@ -24,7 +24,7 @@ public class piece {
         return width;
     }
 
-    public piece rotate()
+    public Piece rotate()
     // Blok dirotasikan searah jarum jam
     {
         char[][] newShape = new char[width][height];
@@ -35,10 +35,10 @@ public class piece {
                 newShape[j][height - 1 - i] = shape[i][j];
             }
         }
-        return new piece(newShape);
+        return new Piece(newShape);
     }
 
-    public piece flip()
+    public Piece flip()
     // Blok dicerminkan
     {
         char[][] newShape = new char[height][width];
@@ -49,6 +49,6 @@ public class piece {
                 newShape[i][width - i - j] = shape[i][j];
             }   
         }
-        return new piece(newShape);
+        return new Piece(newShape);
     }
 }
