@@ -1,10 +1,10 @@
 import java.util.List;
 
-public class solver {
-    private board board;
-    private List<piece> pieces;
+public class Solver {
+    private Board board;
+    private List<Piece> pieces;
 
-    public solver(board board, List<piece> pieces)
+    public Solver(Board board, List<Piece> pieces)
     {
         this.board = board;
         this.pieces = pieces;
@@ -17,7 +17,7 @@ public class solver {
             return board.isFull(); // Ditemukan solusi apabila semua blok telah dicoba dan papan terisi penuh
         }
 
-        piece piece = pieces.get(index);
+        Piece piece = pieces.get(index);
 
         // Meletakkan blok di setiap posisi dengan rotasi dan pencerminan
         for (int i = 0; i < board.getRows(); i++)
