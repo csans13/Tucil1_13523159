@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class Board {
     private int rows, cols;
     private char[][] grid;
@@ -28,65 +30,96 @@ public class Board {
         return cols;
     }
 
-    public boolean isPlaceable(Piece piece, int row, int col)
+    public char[][] getGrid()
+    {
+        return grid;
+    }
+
+    public void clear()
+    {
+        for (char[] row : grid)
+        {
+            Arrays.fill(row, ' ');
+        }
+    }
+
+    private boolean isPlaceable(Piece piece, int x, int y)
     // Apakah suatu blok dapat ditempatkan pada posisi tertentu
     {
-        for (int i = 0; i < piece.getHeight(); i++)
+        char[][] shape = piece.getShape();
+        int height = piece.getHeight();
+        int width = piece.getWidth();
+
+        if (x + height > rows || y + width > cols) return false;
+            
+        for (int i = 0; i < height; i++)
         {
-            for (int j = 0; j < piece.getWidth(); j++)
+            for (int j = 0; j < width; j++)
             {
-                if (piece.getShape()[i][j] != ' ') // Jika blok mengisi suatu space pada papan
+                if (shape[i][j] != ' ' && grid[x + i][y + j] != ' ')
                 {
-                    int boardRow = row + i;
-                    int boardCol = col + j;
-                    if (boardRow >= rows || boardCol >= cols || grid[boardRow][boardCol] != ' ')
-                    {
-                        return false;
-                    }
+                    return false;
                 }
             }
         }
         return true;
     }
 
-    public void placePiece(Piece piece, int row, int col, char symbol)
+    private void placePiece(Piece piece, int x, int y)
     // Menempatkan blok pada papan
     {
-        for (int i = 0; i < piece.getHeight(); i++)
+        char[][] shape = piece.getShape();
+        int height = piece.getHeight();
+        int width = piece.getWidth();
+
+        for (int i = 0; i < height; i++)
         {
-            for (int j = 0; j < piece.getWidth(); j++)
+            for (int j = 0; j < width; j++)
             {
-                if (piece.getShape()[i][j] != ' ')
+                if (shape[i][j] != ' ')
                 {
-                    grid[row + i][col + j] = symbol;
+                    grid[x + i][y + j] = piece.getId();
                 }
             }
         }
     }
 
-    public void removePiece(Piece piece, int row, int col)
-    // Menghapus blok dari papan (backtracking)
+    public boolean areAllPlaceable(List<Piece> pieces)
     {
-        for (int i = 0; i < piece.getHeight(); i++)
+        for (Piece piece : pieces)
         {
-            for (int j = 0; j < piece.getWidth(); j++)
+            boolean placed = false;
+
+            for (Piece transformation : piece.getAllTransformations())
             {
-                if (piece.getShape()[i][j] != ' ')
+                for (int i = 0; i < rows; i++)
                 {
-                    grid[row + i][col + j] = ' ';   
-                }   
-            }            
+                    for (int j = 0; j < cols; j++)
+                    {
+                        if (isPlaceable(transformation, i, j))
+                        {
+                            placePiece(transformation, i, j);
+                            placed = true;
+                            break;
+                        }
+                    }
+                    if (placed) break;
+                }
+                if (placed) break;
+            }
+            if (!placed) return false;
         }
+        return true;
     }
 
     public boolean isFull()
     // Apakah papan telah terisi penuh
     {
-        for (int i = 0; i < rows; i++)
+        for (char[] row : grid)
         {
-            for (int j = 0; j < cols; j++)
+            for (char cell : row)
             {
-                if (grid[i][j] == ' ') // terdapat space kosong
+                if (cell == ' ') // terdapat space kosong
                 {
                     return false;
                 }
