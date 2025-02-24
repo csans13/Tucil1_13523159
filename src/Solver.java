@@ -1,50 +1,47 @@
+import java.util.ArrayList;
 import java.util.List;
 
-public class Solver {
-    private Board board;
-    private List<Piece> pieces;
-
-    public Solver(Board board, List<Piece> pieces)
+public class Solver
+{
+    private static void swapPieces(List<Piece> pieces, int i, int j)
     {
-        this.board = board;
-        this.pieces = pieces;
+        Piece temp = pieces.get(i);
+        pieces.set(i, pieces.get(j));
+        pieces.set(j, temp);
     }
 
-    public boolean solve(int index)
+    private static void getPermsHelper(List<Piece> pieces, int index, List<List<Piece>> perms)
     {
         if (index == pieces.size())
         {
-            return board.isFull(); // Ditemukan solusi apabila semua blok telah dicoba dan papan terisi penuh
+            perms.add(new ArrayList<>(pieces));
+            return;
         }
-
-        Piece piece = pieces.get(index);
-
-        // Meletakkan blok di setiap posisi dengan rotasi dan pencerminan
-        for (int i = 0; i < board.getRows(); i++)
+        for (int i = index; i < pieces.size(); i++)
         {
-            for (int j = 0; j < board.getCols(); j++)
-            {
-                for (int k = 0; k < 4; k++)
-                // Mencoba 4 bentuk blok (rotasi)
-                {
-                    for (int l = 0; l < 2; l++)
-                    // Mencoba 2 bentuk blok (pencerminan)
-                    {
-                        if (board.isPlaceable(piece, i, j))
-                        {
-                            board.placePiece(piece, i, j, (char) ('A' + index));
-                            if (solve(index + 1))
-                            {
-                                return true;
-                            }
-                            board.removePiece(piece, i, j); // Backtrack
-                        }
-                        piece = piece.flip();
-                    }
-                    piece = piece.rotate();
-                }
-            }
+            swapPieces(pieces, index, i);
+            getPermsHelper(pieces, index + 1, perms);
+            swapPieces(pieces, index, i);
         }
-        return false;
+    }
+
+    private static List<List<Piece>> getPerms(List<Piece> pieces)
+    {
+        List<List<Piece>> perms = new ArrayList<>();
+        getPermsHelper(pieces, 0, perms);
+        return perms;
+    }
+
+    public static long tryAllConfig(Board board, List<Piece> pieces, long attempts)
+    {
+        List<List<Piece>> allPerms = getPerms(pieces);
+        for (List<Piece> perm : allPerms)
+        {
+            attempts++;
+            board.clear();
+
+            if (board.areAllPlaceable(perm)) return attempts;
+        }
+        return -attempts;
     }
 }
